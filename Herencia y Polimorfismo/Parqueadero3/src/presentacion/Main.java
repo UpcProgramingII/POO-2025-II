@@ -4,11 +4,17 @@
  */
 package presentacion;
 
-import datos.BDVehiculo;
+import datos.ListVehiculo;
 import datos.IBDVehiculo;
 import dominio.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import logica.GestionVehiculo;
 import logica.ParkingManager;
 
 /**
@@ -23,31 +29,34 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        IBDVehiculo bd = new BDVehiculo();
+        GestionVehiculo logicaVehiculo = new GestionVehiculo();
         ParkingManager parqueadero = new ParkingManager();
         
         Vehiculo auto = new Auto("ABC", "Toyota", 2020, 4);
-        bd.adicionarVehiculo(auto);
+        logicaVehiculo.adicionarVehiculo(auto);
         
         Vehiculo moto= new Moto("rge", "Suzuki", 501);        
-        bd.adicionarVehiculo(moto);
+        Vehiculo moto2= new Moto("rge", "Suzuki", 501);        
+        logicaVehiculo.adicionarVehiculo(moto);
         
         Vehiculo cicla = new Bicicleta("123", "Cross", true);
-        bd.adicionarVehiculo(cicla);
+        logicaVehiculo.adicionarVehiculo(cicla);
         
-        Ticket ticket1 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(5), bd.buscar("ABC"));
+        Ticket ticket1 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(5), logicaVehiculo.buscar("ABC"));
         parqueadero.imprimirTicket(ticket1);
         
-        Ticket ticket2 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(3), bd.buscar("rge"));
+        Ticket ticket2 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(3), logicaVehiculo.buscar("rge"));
         parqueadero.imprimirTicket(ticket2);
         
-        Ticket ticket3 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(2), bd.buscar("123"));
+        Ticket ticket3 = parqueadero.generarTicket(LocalDateTime.now(), LocalDateTime.now().plusHours(2), logicaVehiculo.buscar("123"));
         parqueadero.imprimirTicket(ticket3);
         
-        imprimir(bd.listarTodos());
+        imprimir(logicaVehiculo.listarTodos());
+        
+       
     }
     
-    public static void imprimir(ArrayList<Vehiculo> lista){
+    public static void imprimir(List<Vehiculo> lista){
         
         for(Vehiculo v: lista){
             System.out.println(v);

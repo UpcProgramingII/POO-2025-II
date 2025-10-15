@@ -6,16 +6,19 @@ package datos;
 
 import dominio.Vehiculo;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
 
 /**
  *
  * @author Jairo F
  */
-public class BDVehiculo implements IBDVehiculo {
+public class ListVehiculo implements IBDVehiculo {
     
-    private ArrayList<Vehiculo> registro;
+    private List<Vehiculo> registro;
 
-    public BDVehiculo() {
+    public ListVehiculo() {
         
         this.registro = new ArrayList();
         
@@ -23,7 +26,7 @@ public class BDVehiculo implements IBDVehiculo {
     
        
     @Override
-    public ArrayList<Vehiculo> listarTodos(){
+    public List<Vehiculo> listarTodos(){
         
         return new ArrayList(this.registro);
         
@@ -44,6 +47,17 @@ public class BDVehiculo implements IBDVehiculo {
     @Override
     public void adicionarVehiculo(Vehiculo v) {
         this.registro.add(v);
+    }
+
+    @Override
+    public void eliminar(String placa) {
+        
+        Vehiculo v = this.buscar(placa);
+        if(v!=null){
+            this.registro.remove(v);
+        }
+        
+        
     }
     
     

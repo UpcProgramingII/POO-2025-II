@@ -6,6 +6,7 @@ package datos;
 
 import dominio.Vehiculo;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -14,8 +15,9 @@ import java.util.ArrayList;
 public interface IBDVehiculo {
     
     public void adicionarVehiculo(Vehiculo v);
-    public ArrayList<Vehiculo> listarTodos();
+    public List<Vehiculo> listarTodos();
     public Vehiculo buscar(String placa);
+    public void eliminar(String placa);
     
     
 }
