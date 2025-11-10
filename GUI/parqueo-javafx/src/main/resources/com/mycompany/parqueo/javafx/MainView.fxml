@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.parqueo.javafx.MainViewController">
+
+    <!-- Panel lateral izquierdo -->
+    <left>
+        <VBox alignment="TOP_CENTER" prefWidth="220.0" spacing="20.0" style="-fx-background-color: #2C3E50;" BorderPane.alignment="CENTER">
+
+            <ImageView fx:id="logoImage" fitWidth="140.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../../img/Parking%20Sign%20Flat%20Style.jpg" />
+                </image>
+            <VBox.margin>
+               <Insets top="20.0" />
+            </VBox.margin>
+            </ImageView>
+
+            <Separator prefWidth="180.0" />
+
+            <Button fx:id="btnRegistroVehiculo" onAction="#handleRegistroVehiculo" styleClass="side-menu-button" text="Registro Vehículo" />
+
+            <Button fx:id="btnIngresoSalida" onAction="#handleIngresoSalida" styleClass="side-menu-button" text="Ingreso / Salida" />
+
+            <Button fx:id="btnInforme" onAction="#handleInforme" styleClass="side-menu-button" text="Informe" />
+
+            <Region VBox.vgrow="ALWAYS" />
+         <Label alignment="CENTER" contentDisplay="CENTER" disable="true" prefHeight="28.0" prefWidth="220.0" styleClass="copyright" text="copyright © Unicesar" textFill="#fcfafa" />
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+        </VBox>
+    </left>
+
+    <center>
+        <AnchorPane fx:id="mainContentPane" style="-fx-background-color: #ECF0F1;">
+            <children>
+                <Label style="-fx-font-size: 24px; -fx-text-fill: #34495E;" text="Bienvenido al Sistema de Parqueadero" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
+            </children>
+        </AnchorPane>
+    </center>
+   <stylesheets>
+      <URL value="@styles/main.css" />
+      <URL value="@../../../../styles/main.css" />
+   </stylesheets>
+</BorderPane>

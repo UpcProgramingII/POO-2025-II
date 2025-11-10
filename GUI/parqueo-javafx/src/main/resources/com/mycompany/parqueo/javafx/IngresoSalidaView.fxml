@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #ECF0F1;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.parqueo.javafx.IngresoSalidaViewController">
+
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="20" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+            
+            <!-- Título -->
+            <Label style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" text="Registro de Ingreso / Egreso de Vehículos" />
+
+            <!-- Campo de Placa -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label prefWidth="160" style="-fx-font-size: 14px;" text="Placa del vehículo:" />
+                <TextField fx:id="txtPlaca" prefWidth="200" promptText="Ej. ABC123" />
+                <Button fx:id="btnIngresar" onAction="#handleIngreso" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Ingreso" />
+                <Button fx:id="btnSalir" onAction="#handleSalida" style="-fx-background-color: #E67E22; -fx-text-fill: white; -fx-font-weight: bold;" text="Registrar Salida" />
+            </HBox>
+
+            <Separator prefWidth="700" />
+
+            <!-- Ticket -->
+            <TitledPane collapsible="false" expanded="true" prefWidth="700" text="Ticket del Parqueo">
+                <content>
+                   <GridPane hgap="15.0" vgap="10.0">
+
+                        <columnConstraints>
+                            <ColumnConstraints halignment="RIGHT" prefWidth="180" />
+                            <ColumnConstraints halignment="LEFT" prefWidth="400" />
+                        </columnConstraints>
+
+                        <Label text="ID Ticket:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="lblIdTicket" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Hora Ingreso:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="lblHoraIngreso" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="Hora Salida:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="lblHoraSalida" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="Duración:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="lblDuracion" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="Tipo Vehículo:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label fx:id="lblTipoVehiculo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label text="Tarifa:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="lblTarifa" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <Label text="Recargo:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Label fx:id="lblRecargo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                        <Label text="Costo Total:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Label fx:id="lblCostoTotal" style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
+                  <padding>
+                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                  </padding>
+                    </GridPane>
+                </content>
+            </TitledPane>
+
+            <Label fx:id="lblMensaje" textFill="#2C3E50" wrapText="true" />
+        </VBox>
+    </children>
+</AnchorPane>

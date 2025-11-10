@@ -1,0 +1,90 @@
+/* ============================
+   🎨 ESTILO PRINCIPAL
+   ============================ */
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", sans-serif;
+    -fx-background-color: #ECF0F1;
+}
+
+/* ============================
+   🧭 MENÚ LATERAL
+   ============================ */
+.vbox {
+    -fx-padding: 25 10 25 10;
+}
+
+/* ============================
+   🚗 BOTONES DEL MENÚ LATERAL
+   ============================ */
+.side-menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ECF0F1;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-pref-width: 180px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 0 10 20;
+    -fx-background-radius: 8px;
+    -fx-transition: all 0.3s ease;
+}
+
+/* Efecto hover */
+.side-menu-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-cursor: hand;
+    -fx-text-fill: #1ABC9C;
+    -fx-translate-x: 5px; /* pequeño desplazamiento animado */
+}
+
+/* Efecto cuando el botón está presionado */
+.side-menu-button:pressed {
+    -fx-background-color: #1ABC9C;
+    -fx-text-fill: white;
+    -fx-translate-x: 0;
+}
+
+/* ============================
+   🔷 BOTÓN ACTIVO (seleccionado)
+   ============================ */
+.side-menu-button.active {
+    -fx-background-color: #1ABC9C;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* ============================
+   🧱 SEPARADORES Y LOGO
+   ============================ */
+.separator {
+    -fx-background-color: #34495E;
+    -fx-padding: 0 10 0 10;
+}
+
+.image-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);
+}
+
+/* ============================
+   💡 EFECTOS DE TRANSICIÓN
+   ============================ */
+.button {
+    -fx-transition: all 0.3s ease;
+}
+
+/* ============================
+   💡 EFECTOS - REGISTRO DE VEHICULO 
+   ============================ */
+.combo-box, .text-field {
+    -fx-pref-width: 300px;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2C3E50;
+}
+
+.copyright {
+    -fx-text-fill: #FFFFFF;
+}

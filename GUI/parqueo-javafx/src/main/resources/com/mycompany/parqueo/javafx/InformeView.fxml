@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/13"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.parqueo.javafx.InformeViewController"
+            prefWidth="900" prefHeight="600"
+            style="-fx-background-color: #ECF0F1;">
+
+    <children>
+        <VBox spacing="20" alignment="TOP_CENTER"
+              AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+              AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+            
+            <!-- Título -->
+            <Label text="Informe de Parqueos"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+
+            <!-- Filtros -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Filtrar por placa:" style="-fx-font-size: 14px;"/>
+                <TextField fx:id="txtFiltroPlaca" promptText="Ingrese placa (Ej. ABC123)" prefWidth="200"/>
+                <Button fx:id="btnFiltrar" text="Filtrar" 
+                        onAction="#handleFiltrar"
+                        style="-fx-background-color: #3498DB; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Button fx:id="btnLimpiar" text="Mostrar Todo"
+                        onAction="#handleLimpiar"
+                        style="-fx-background-color: #95A5A6; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+
+            <!-- Tabla -->
+            <TableView fx:id="tblParqueos" prefHeight="450" prefWidth="850">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+                    <TableColumn fx:id="colHoraInicio" text="Hora Ingreso" prefWidth="120"/>
+                    <TableColumn fx:id="colHoraFin" text="Hora Salida" prefWidth="120"/>
+                    <TableColumn fx:id="colDuracion" text="Duración" prefWidth="100"/>
+                    <TableColumn fx:id="colPlaca" text="Placa Vehículo" prefWidth="120"/>
+                    <TableColumn fx:id="colCosto" text="Costo ($)" prefWidth="100"/>
+                    <TableColumn fx:id="colActivo" text="Activo" prefWidth="80"/>
+                </columns>
+            </TableView>
+
+            <Label fx:id="lblTotalRegistros"
+                   text="Total registros: 0"
+                   style="-fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+        </VBox>
+    </children>
+</AnchorPane>

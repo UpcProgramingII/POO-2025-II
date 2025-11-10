@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.mycompany.parqueo.javafx.RegistroVehiculoViewController"
+            prefWidth="800.0" prefHeight="600.0"
+            style="-fx-background-color: #ECF0F1;">
+
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="15"
+              AnchorPane.leftAnchor="50.0"
+              AnchorPane.rightAnchor="50.0"
+              AnchorPane.topAnchor="30.0">
+            
+            <!-- Título -->
+            <Label text="Registro de Vehículos"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2C3E50;" />
+
+            <!-- Tipo de Vehículo -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Tipo de vehículo:" style="-fx-font-size: 14px;" />
+                <ComboBox fx:id="cmbTipoVehiculo" prefWidth="200.0" />
+            </HBox>
+
+            <!-- Campo común: Placa -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Placa:" style="-fx-font-size: 14px;" prefWidth="120"/>
+                <TextField fx:id="txtPlaca" promptText="Ej. ABC123" prefWidth="300"/>
+            </HBox>
+
+            <!-- Sección Auto -->
+            <VBox fx:id="paneAuto" spacing="10" visible="false" managed="false">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Marca:" prefWidth="120"/>
+                    <TextField fx:id="txtMarcaAuto" promptText="Ej. Toyota" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Modelo:" prefWidth="120"/>
+                    <TextField fx:id="txtModeloAuto" promptText="Ej. 2022" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="N° de Puertas:" prefWidth="120"/>
+                    <TextField fx:id="txtPuertasAuto" promptText="Ej. 4" prefWidth="300"/>
+                </HBox>
+            </VBox>
+
+            <!-- Sección Moto -->
+            <VBox fx:id="paneMoto" spacing="10" visible="false" managed="false">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Marca:" prefWidth="120"/>
+                    <TextField fx:id="txtMarcaMoto" promptText="Ej. Yamaha" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Cilindraje:" prefWidth="120"/>
+                    <TextField fx:id="txtCilindrajeMoto" promptText="Ej. 150" prefWidth="300"/>
+                </HBox>
+            </VBox>
+
+            <!-- Sección Bicicleta -->
+            <VBox fx:id="paneBicicleta" spacing="10" visible="false" managed="false">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tipo:" prefWidth="120"/>
+                    <TextField fx:id="txtTipoBicicleta" promptText="Ej. Montaña" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="¿Tiene cambios?" prefWidth="120"/>
+                    <CheckBox fx:id="chkCambiosBicicleta" text="Sí" />
+                </HBox>
+            </VBox>
+
+            <!-- Botón Registrar -->
+            <Button fx:id="btnRegistrar" text="Registrar Vehículo"
+                    onAction="#handleRegistrarVehiculo"
+                    style="-fx-background-color: #1ABC9C; -fx-text-fill: white; -fx-font-weight: bold; -fx-pref-width: 200; -fx-padding: 10 20 10 20;"/>
+
+            <!-- Área de mensajes -->
+            <Label fx:id="lblMensaje" textFill="#2C3E50" wrapText="true"/>
+        </VBox>
+    </children>
+</AnchorPane>
+
