@@ -4,12 +4,17 @@
  */
 package com.mycompany.parqueo.javafx;
 
+import com.mycompany.parqueo.javafx.dominio.Vehiculo;
+import com.mycompany.parqueo.javafx.excepciones.VehiculoException;
+import com.mycompany.parqueo.javafx.logica.GestionVehiculo;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 public class RegistroVehiculoViewController {
 
+    //private GestionVehiculo logicaVehiculo = new GestionVehiculo();
+    
     @FXML
     private ComboBox<String> cmbTipoVehiculo;
     @FXML
@@ -44,6 +49,8 @@ public class RegistroVehiculoViewController {
             actualizarSecciones(newVal);
         });
     }
+    
+    
 
     private void actualizarSecciones(String tipo) {
         // Ocultar todos
@@ -76,28 +83,41 @@ public class RegistroVehiculoViewController {
     private void handleRegistrarVehiculo() {
         String tipo = cmbTipoVehiculo.getValue();
         String placa = txtPlaca.getText();
-
+        Vehiculo vehiculo=null;
         if (tipo == null || placa.isEmpty()) {
             lblMensaje.setText("⚠️ Debe seleccionar un tipo de vehículo y una placa válida.");
             return;
         }
+        try{
+            switch (tipo) {
+                case "Auto":
+                            vehiculo = App.logicaVehiculo.crearAuto(placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText());
+                            lblMensaje.setText(String.format("Auto registrado: %s, Marca %s, Modelo %s, Puertas %s",
+                                    placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText()));
+                            break;
+                case "Moto":
 
-        switch (tipo) {
-            case "Auto":
-                lblMensaje.setText(String.format("Auto registrado: %s, Marca %s, Modelo %s, Puertas %s",
-                        placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText()));
-                break;
-            case "Moto":
-                lblMensaje.setText(String.format("Moto registrada: %s, Marca %s, Cilindraje %s",
-                        placa, txtMarcaMoto.getText(), txtCilindrajeMoto.getText()));
-                break;
-            case "Bicicleta":
-                lblMensaje.setText(String.format("Bicicleta registrada: %s, Tipo %s, Cambios: %s",
-                        placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected() ? "Sí" : "No"));
-                break;
+                           vehiculo = App.logicaVehiculo.crearMoto(placa, txtMarcaMoto.getText(), txtCilindrajeMoto.getText());
+                           lblMensaje.setText(String.format("Moto registrada: %s, Marca %s, Cilindraje %s",
+                                                    placa, 
+                                                    txtMarcaMoto.getText(), 
+                                                    txtCilindrajeMoto.getText()));
+                            break;
+
+                case "Bicicleta":
+                            vehiculo = App.logicaVehiculo.crearBicicleta(placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected());
+                            lblMensaje.setText(String.format("Bicicleta registrada: %s, Tipo %s, Cambios: %s",
+                                    placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected() ? "Sí" : "No"));
+                            break;
+
+            }
+            App.logicaVehiculo.adicionarVehiculo(vehiculo);
+            limpiarCampos();
+        }catch(IllegalArgumentException | VehiculoException e){
+
+            lblMensaje.setText(e.getMessage());
+
         }
-
-        limpiarCampos();
     }
 
     private void limpiarCampos() {

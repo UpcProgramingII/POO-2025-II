@@ -26,13 +26,12 @@ public class ParkingManager {
     }
     
     
-    public void registroIngreso(IFacturable vehiculo){
+    public Ticket crearIngreso(IFacturable vehiculo){
         
         RegistroParking registro = new RegistroParking(vehiculo);
         registro.setId(this.bdParking.size()+1); 
         this.bdParking.registrarIngreso(registro);
-        
-        
+        return this.generarTicket(registro);
     }
     
     public Ticket registrarSalida(String placa){
@@ -45,6 +44,10 @@ public class ParkingManager {
         //this.bdParking.registrarIngreso(registro);
         return this.generarTicket(registro);
         
+    }
+    
+    public boolean contieneVehiculo(String placa){
+        return this.bdParking.contieneVehiculo(placa);
     }
     
     public void printRegistro(){
@@ -64,7 +67,9 @@ public class ParkingManager {
     
     
     public Ticket generarTicket(RegistroParking registro){
-        return this.generarTicket(registro.gethInicio(), registro.gethFinal(), registro.getVehiuclo());
+        Ticket t= this.generarTicket(registro.gethInicio(), registro.gethFinal(), registro.getVehiuclo());
+        t.setIdTicket(String.valueOf(registro.getId()));
+        return t;
     }
     
     
@@ -74,7 +79,7 @@ public class ParkingManager {
         
         Ticket ticket = new Ticket();
         ticket.sethInicio(hEntrada.toString());
-        ticket.sethFinal(hSalida.toString());
+        ticket.sethFinal(hSalida!=null?hSalida.toString():"");
         ticket.setDuracion(String.valueOf(this.duracionHoras(hEntrada, hSalida)));
         ticket.setPlaca(((Vehiculo)vehiculo).getPlaca());
         ticket.setTipo(vehiculo.getType());
@@ -99,28 +104,16 @@ public class ParkingManager {
         registro.setDuracion(duracion);
     }
     public double duracionHoras(LocalDateTime hEntrada, LocalDateTime hSalida){
-        Duration duracion = Duration.between(hEntrada, hSalida);
-        //long horas = duracion.toHours();
-        long horas = duracion.toSeconds();
-        return horas;
+        if(hSalida!=null){
+            Duration duracion = Duration.between(hEntrada, hSalida);
+            //long horas = duracion.toHours();
+            long horas = duracion.toSeconds();
+            return horas;
+        }
+        else return 0;
     }
     
-    public void imprimirTicket(Ticket ticket){
-        ParkingManager.ticket ++;
-        
-        System.out.println("No Ticket: " + ParkingManager.ticket + "\n"+
-                       "Hora Inicio: " + ticket.gethInicio() + "\n" +
-                       "Hora salida: " + ticket.gethFinal()  + "\n" +
-                       "Horas Facturadas: " + ticket.getDuracion() + "\n" +
-                       "Vehiculo: " + ticket.getTipo() + "\n" +
-                       "Placa: " + ticket.getPlaca() + "\n" +
-                       "Recargo: " + ticket.getRecargo() + "\n" +
-                       "Costo total: " + ticket.getCostoTotal() +"\n" +
-                       "---------------------------\n"
-        );
-        
-    
-    }
+ 
     
     
 }

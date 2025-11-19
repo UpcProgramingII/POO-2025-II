@@ -5,6 +5,10 @@
 package com.mycompany.parqueo.javafx;
 
 
+import com.mycompany.parqueo.javafx.dominio.Ticket;
+import com.mycompany.parqueo.javafx.dominio.Vehiculo;
+import com.mycompany.parqueo.javafx.logica.GestionVehiculo;
+import com.mycompany.parqueo.javafx.logica.ParkingManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.*;
@@ -30,28 +34,38 @@ public class IngresoSalidaViewController {
     @FXML private Label lblRecargo;
     @FXML private Label lblCostoTotal;
 
-    // Simulación de base de datos en memoria
-    private static final Map<String, Ticket> ticketsActivos = new HashMap<>();
-    private static final AtomicInteger contadorId = new AtomicInteger(1);
+    private ParkingManager logicaParking = new ParkingManager();
+    //private GestionVehiculo logicaVehiculo=new GestionVehiculo();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @FXML
     public void handleIngreso() {
         String placa = txtPlaca.getText().trim();
+        Vehiculo vehiculo=null;
         if (placa.isEmpty()) {
             lblMensaje.setText("⚠️ Ingrese una placa válida.");
+            limpiarTicketScreen();
             return;
         }
-
-        if (ticketsActivos.containsKey(placa)) {
+        else {
+            vehiculo = App.logicaVehiculo.buscar(placa);
+            if(vehiculo==null){
+                lblMensaje.setText("⚠️ El vehiculo no se encuentra en DB");
+                limpiarTicketScreen();
+                return;
+            }
+        }
+        
+        
+        if (this.logicaParking.contieneVehiculo(placa)) {
             lblMensaje.setText("⚠️ Este vehículo ya tiene un ingreso activo.");
+            limpiarTicketScreen();
             return;
         }
-
+        
         // Crear nuevo ticket
-        Ticket ticket = new Ticket(contadorId.getAndIncrement(), placa, LocalDateTime.now());
-        ticketsActivos.put(placa, ticket);
+        Ticket ticket = this.logicaParking.crearIngreso(vehiculo);
 
         mostrarTicket(ticket);
         lblMensaje.setText("✅ Ingreso registrado correctamente.");
@@ -62,92 +76,48 @@ public class IngresoSalidaViewController {
         String placa = txtPlaca.getText().trim();
         if (placa.isEmpty()) {
             lblMensaje.setText("⚠️ Ingrese una placa válida.");
+            limpiarTicketScreen();
             return;
         }
 
-        Ticket ticket = ticketsActivos.get(placa);
-        if (ticket == null) {
+
+        if (!this.logicaParking.contieneVehiculo(placa)) {
             lblMensaje.setText("⚠️ No se encontró un ingreso activo para esa placa.");
+            limpiarTicketScreen();
             return;
         }
 
-        ticket.setHoraSalida(LocalDateTime.now());
-        ticket.calcularCosto();
-
-        ticketsActivos.remove(placa);
-
+        Ticket ticket = this.logicaParking.registrarSalida(placa);
         mostrarTicket(ticket);
         lblMensaje.setText("✅ Salida registrada correctamente.");
     }
 
     private void mostrarTicket(Ticket t) {
-        lblIdTicket.setText(String.valueOf(t.getId()));
-        lblHoraIngreso.setText(format(t.getHoraIngreso()));
-        lblHoraSalida.setText(t.getHoraSalida() != null ? format(t.getHoraSalida()) : "-");
-        lblDuracion.setText(t.getDuracionTexto());
-        lblTipoVehiculo.setText(t.getTipoVehiculo());
-        lblTarifa.setText(String.format("$ %.2f", t.getTarifa()));
-        lblRecargo.setText(String.format("$ %.2f", t.getRecargo()));
-        lblCostoTotal.setText(String.format("$ %.2f", t.getTotal()));
+        lblIdTicket.setText(String.valueOf(t.getIdTicket()));
+        //lblHoraIngreso.setText(format(t.getHoraIngreso));
+        lblHoraIngreso.setText(t.gethInicio());
+        //lblHoraSalida.setText(t.getHoraSalida() != null ? format(t.getHoraSalida()) : "-");
+        lblHoraSalida.setText(t.gethFinal());
+        lblDuracion.setText(t.getDuracion());
+        lblTipoVehiculo.setText(t.getTipo());
+        lblTarifa.setText(String.format("$ %.2f", Double.valueOf(t.getTarifa())));
+        lblRecargo.setText(String.format("$ %.2f", Double.valueOf(t.getRecargo())));
+        lblCostoTotal.setText(String.format("$ %.2f", Double.valueOf(t.getCostoTotal())));
     }
+    
+    private void limpiarTicketScreen() {
+        lblIdTicket.setText(null);
+        lblHoraIngreso.setText(null);
+        lblHoraSalida.setText(null);
+        lblDuracion.setText(null);
+        lblTipoVehiculo.setText(null);
+        lblTarifa.setText(null);
+        lblRecargo.setText(null);
+        lblCostoTotal.setText(null);
+    }
+    
 
     private String format(LocalDateTime dt) {
         return dt != null ? dt.format(formatter) : "-";
     }
-
-    /* ==========================
-       Clase interna Ticket
-       ========================== */
-    private static class Ticket {
-        private final int id;
-        private final String placa;
-        private final LocalDateTime horaIngreso;
-        private LocalDateTime horaSalida;
-        private double tarifa;
-        private double recargo;
-        private double total;
-        private String tipoVehiculo = "Desconocido";
-
-        public Ticket(int id, String placa, LocalDateTime horaIngreso) {
-            this.id = id;
-            this.placa = placa;
-            this.horaIngreso = horaIngreso;
-            // Tarifa base simulada
-            this.tarifa = 2.0; 
-        }
-
-        public void setHoraSalida(LocalDateTime horaSalida) {
-            this.horaSalida = horaSalida;
-        }
-
-        public void calcularCosto() {
-            if (horaSalida == null) return;
-
-            Duration duracion = Duration.between(horaIngreso, horaSalida);
-            long minutos = duracion.toMinutes();
-            double horas = Math.max(1, Math.ceil(minutos / 60.0));
-
-            // Tarifa base + recargo
-            this.recargo = (horas > 3) ? 1.5 : 0;
-            this.total = (tarifa * horas) + recargo;
-        }
-
-        public String getDuracionTexto() {
-            if (horaSalida == null) return "-";
-            Duration d = Duration.between(horaIngreso, horaSalida);
-            long horas = d.toHours();
-            long minutos = d.toMinutesPart();
-            return String.format("%dh %02dm", horas, minutos);
-        }
-
-        // Getters
-        public int getId() { return id; }
-        public LocalDateTime getHoraIngreso() { return horaIngreso; }
-        public LocalDateTime getHoraSalida() { return horaSalida; }
-        public double getTarifa() { return tarifa; }
-        public double getRecargo() { return recargo; }
-        public double getTotal() { return total; }
-        public String getTipoVehiculo() { return tipoVehiculo; }
-    }
 }
-

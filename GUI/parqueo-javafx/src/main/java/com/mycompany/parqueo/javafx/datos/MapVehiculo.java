@@ -49,5 +49,10 @@ public class MapVehiculo implements IBDVehiculo {
         this.bd.remove(placa);
         
     }
+
+    @Override
+    public boolean exist(String placa) {
+        return this.bd.containsKey(placa);
+    }
     
 }

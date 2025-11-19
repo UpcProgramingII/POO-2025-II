@@ -46,5 +46,15 @@ public class ListRegistroParking implements IBDRegistroParking {
     public List<RegistroParking> listAll() {
         return new ArrayList(this.db);
     }
+
+    @Override
+    public boolean contieneVehiculo(String placa) {
+        for(RegistroParking r: this.db){
+            if(r.isActivo() && r.getVehiuclo().getPlaca().equals(placa)){
+                return true;
+            }
+        }
+        return false ;
+    }
     
 }

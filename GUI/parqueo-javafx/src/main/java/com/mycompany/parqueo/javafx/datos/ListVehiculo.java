@@ -57,6 +57,17 @@ public class ListVehiculo implements IBDVehiculo {
         
         
     }
+
+    @Override
+    public boolean exist(String placa) {
+       
+        for(Vehiculo v: this.registro){
+            if(v.getPlaca().equals(placa)){
+                return true;
+            }
+        }
+        return false;
+    }
     
     
     

@@ -1,5 +1,6 @@
 package com.mycompany.parqueo.javafx;
 
+import com.mycompany.parqueo.javafx.logica.GestionVehiculo;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +15,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    public static GestionVehiculo logicaVehiculo = new GestionVehiculo();
 
     @Override
     public void start(Stage stage) throws IOException {

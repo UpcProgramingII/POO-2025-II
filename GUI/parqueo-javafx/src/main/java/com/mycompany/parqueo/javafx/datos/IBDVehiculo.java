@@ -18,6 +18,7 @@ public interface IBDVehiculo {
     public List<Vehiculo> listarTodos();
     public Vehiculo buscar(String placa);
     public void eliminar(String placa);
+    public boolean exist(String placa);
     
     
 }

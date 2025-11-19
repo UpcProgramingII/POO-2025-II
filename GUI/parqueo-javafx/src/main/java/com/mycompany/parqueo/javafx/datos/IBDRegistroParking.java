@@ -20,5 +20,6 @@ public interface IBDRegistroParking {
     public int size();
     
     public List<RegistroParking> listAll();
+    public boolean contieneVehiculo(String placa);
     
 }

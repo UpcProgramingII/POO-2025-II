@@ -10,7 +10,6 @@ package com.mycompany.parqueo.javafx.dominio;
  */
 public class Ticket {
     
-    private static int id=0;
     private String idTicket;
     private String hInicio;
     private String hFinal;
@@ -22,11 +21,9 @@ public class Ticket {
     private String costoTotal;
 
     public Ticket() {
-        Ticket.id++;
-        this.idTicket=String.valueOf(Ticket.id);
     }
 
-    public Ticket(String hInicio, String hFinal, String duracion, String placa, String tipo, String tarifa, String recargo, String costoTotal) {
+    public Ticket(String id, String hInicio, String hFinal, String duracion, String placa, String tipo, String tarifa, String recargo, String costoTotal) {
         this();
         this.hInicio = hInicio;
         this.hFinal = hFinal;
@@ -36,6 +33,7 @@ public class Ticket {
         this.tarifa = tarifa;
         this.recargo = recargo;
         this.costoTotal = costoTotal;
+        this.idTicket=id;
     }
 
     public String getIdTicket() {

@@ -46,6 +46,11 @@ public class MapRegistroParking implements IBDRegistroParking {
         return new ArrayList(this.bd.values());
     }
 
+    @Override
+    public boolean contieneVehiculo(String placa) {
+        return this.bd.containsKey(placa);
+    }
+
    
     
     
