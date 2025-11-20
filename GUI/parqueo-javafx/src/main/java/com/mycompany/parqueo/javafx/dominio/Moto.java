@@ -14,7 +14,12 @@ public class Moto extends Vehiculo {
     private String marca;
     private int cilindraje;
 
+    public Moto(String placa) {
+        super(placa);
+    }
+
    
+    
     public Moto(String placa, String marca, int cilindraje) {
         super(placa);
         this.marca = marca;
@@ -60,6 +65,13 @@ public class Moto extends Vehiculo {
         return 1000;
     }
     
+     public String getInfo(){
+        
+        return "Moto;" + 
+                this.getPlaca()+";"+
+                this.getMarca()+";"+
+                this.cilindraje;
+    };
     
     
 }

@@ -16,6 +16,10 @@ public class Auto extends Vehiculo{
     private int modelo;
     private  int nPuertas;
 
+    public Auto(String placa) {
+        super(placa);
+    }
+
    
 
     public Auto(String placa, String marca, int modelo, int nPuertas) {
@@ -70,5 +74,13 @@ public class Auto extends Vehiculo{
         return 2000;
     }
     
+    public String getInfo(){
+        
+        return "Auto;" + 
+                this.getPlaca()+";"+
+                this.getMarca()+";"+
+                this.getModelo()+";"+
+               this.getnPuertas();
+    };
     
 }

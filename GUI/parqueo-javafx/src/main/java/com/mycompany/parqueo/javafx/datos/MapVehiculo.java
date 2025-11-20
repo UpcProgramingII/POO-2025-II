@@ -5,6 +5,7 @@
 package com.mycompany.parqueo.javafx.datos;
 
 import com.mycompany.parqueo.javafx.dominio.Vehiculo;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,35 +24,35 @@ public class MapVehiculo implements IBDVehiculo {
     }
     
     @Override
-    public void adicionarVehiculo(Vehiculo v) {
+    public void adicionarVehiculo(Vehiculo v) throws ArchivoException {
         
         this.bd.put(v.getPlaca(), v);
         
     }
 
     @Override
-    public List<Vehiculo> listarTodos() {
+    public List<Vehiculo> listarTodos() throws ArchivoException {
     
          return new ArrayList(this.bd.values());
          
     }
 
     @Override
-    public Vehiculo buscar(String placa) {
+    public Vehiculo buscar(String placa) throws ArchivoException {
         
         return this.bd.get(placa);
         
     }
 
     @Override
-    public void eliminar(String placa) {
+    public void eliminar(String placa) throws ArchivoException {
         
         this.bd.remove(placa);
         
     }
 
     @Override
-    public boolean exist(String placa) {
+    public boolean exist(String placa) throws ArchivoException {
         return this.bd.containsKey(placa);
     }
     

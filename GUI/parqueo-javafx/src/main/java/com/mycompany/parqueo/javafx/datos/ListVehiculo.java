@@ -5,6 +5,7 @@
 package com.mycompany.parqueo.javafx.datos;
 
 import com.mycompany.parqueo.javafx.dominio.Vehiculo;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +25,14 @@ public class ListVehiculo implements IBDVehiculo {
     
        
     @Override
-    public List<Vehiculo> listarTodos(){
+    public List<Vehiculo> listarTodos() throws ArchivoException{
         
         return new ArrayList(this.registro);
         
     }
     
     @Override
-    public Vehiculo buscar(String placa){
+    public Vehiculo buscar(String placa) throws ArchivoException{
         
         for(Vehiculo v: this.registro){
             if(v.getPlaca().equals(placa)){
@@ -43,12 +44,12 @@ public class ListVehiculo implements IBDVehiculo {
     }
 
     @Override
-    public void adicionarVehiculo(Vehiculo v) {
+    public void adicionarVehiculo(Vehiculo v) throws ArchivoException{
         this.registro.add(v);
     }
 
     @Override
-    public void eliminar(String placa) {
+    public void eliminar(String placa) throws ArchivoException{
         
         Vehiculo v = this.buscar(placa);
         if(v!=null){
@@ -59,7 +60,7 @@ public class ListVehiculo implements IBDVehiculo {
     }
 
     @Override
-    public boolean exist(String placa) {
+    public boolean exist(String placa) throws ArchivoException{
        
         for(Vehiculo v: this.registro){
             if(v.getPlaca().equals(placa)){

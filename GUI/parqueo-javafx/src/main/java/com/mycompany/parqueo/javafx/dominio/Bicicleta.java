@@ -13,6 +13,10 @@ public class Bicicleta extends Vehiculo{
     private String tipo;
     private boolean tieneCambios;
 
+    public Bicicleta(String placa) {
+        super(placa);
+    }
+
    
 
     public Bicicleta(String placa, String tipo, boolean tieneCambios) {
@@ -57,5 +61,13 @@ public class Bicicleta extends Vehiculo{
     public double getTarifa() {
         return 300;
     }
+    
+     public String getInfo(){
+        
+        return "Bicicleta;" + 
+                this.getPlaca()+";"+
+                this.tipo+";"+
+                this.tieneCambios;
+    };
     
 }

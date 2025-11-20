@@ -4,9 +4,9 @@
  */
 package com.mycompany.parqueo.javafx;
 
-
 import com.mycompany.parqueo.javafx.dominio.Ticket;
 import com.mycompany.parqueo.javafx.dominio.Vehiculo;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import com.mycompany.parqueo.javafx.logica.GestionVehiculo;
 import com.mycompany.parqueo.javafx.logica.ParkingManager;
 import javafx.fxml.FXML;
@@ -19,51 +19,67 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class IngresoSalidaViewController {
 
-    @FXML private TextField txtPlaca;
-    @FXML private Button btnIngresar;
-    @FXML private Button btnSalir;
-    @FXML private Label lblMensaje;
+    @FXML
+    private TextField txtPlaca;
+    @FXML
+    private Button btnIngresar;
+    @FXML
+    private Button btnSalir;
+    @FXML
+    private Label lblMensaje;
 
     // Ticket labels
-    @FXML private Label lblIdTicket;
-    @FXML private Label lblHoraIngreso;
-    @FXML private Label lblHoraSalida;
-    @FXML private Label lblDuracion;
-    @FXML private Label lblTipoVehiculo;
-    @FXML private Label lblTarifa;
-    @FXML private Label lblRecargo;
-    @FXML private Label lblCostoTotal;
+    @FXML
+    private Label lblIdTicket;
+    @FXML
+    private Label lblHoraIngreso;
+    @FXML
+    private Label lblHoraSalida;
+    @FXML
+    private Label lblDuracion;
+    @FXML
+    private Label lblTipoVehiculo;
+    @FXML
+    private Label lblTarifa;
+    @FXML
+    private Label lblRecargo;
+    @FXML
+    private Label lblCostoTotal;
 
     private ParkingManager logicaParking = new ParkingManager();
-    //private GestionVehiculo logicaVehiculo=new GestionVehiculo();
+    private GestionVehiculo logicaVehiculo = new GestionVehiculo();
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @FXML
     public void handleIngreso() {
         String placa = txtPlaca.getText().trim();
-        Vehiculo vehiculo=null;
+        Vehiculo vehiculo = null;
         if (placa.isEmpty()) {
             lblMensaje.setText("⚠️ Ingrese una placa válida.");
             limpiarTicketScreen();
             return;
-        }
-        else {
-            vehiculo = App.logicaVehiculo.buscar(placa);
-            if(vehiculo==null){
-                lblMensaje.setText("⚠️ El vehiculo no se encuentra en DB");
+        } else {
+
+            try {
+                vehiculo = this.logicaVehiculo.buscar(placa);
+                if (vehiculo == null) {
+                    lblMensaje.setText("⚠️ El vehiculo no se encuentra en DB");
+                    limpiarTicketScreen();
+                    return;
+                }
+            } catch (ArchivoException e) {
+                lblMensaje.setText(e.getMessage());
                 limpiarTicketScreen();
-                return;
             }
         }
-        
-        
+
         if (this.logicaParking.contieneVehiculo(placa)) {
             lblMensaje.setText("⚠️ Este vehículo ya tiene un ingreso activo.");
             limpiarTicketScreen();
             return;
         }
-        
+
         // Crear nuevo ticket
         Ticket ticket = this.logicaParking.crearIngreso(vehiculo);
 
@@ -79,7 +95,6 @@ public class IngresoSalidaViewController {
             limpiarTicketScreen();
             return;
         }
-
 
         if (!this.logicaParking.contieneVehiculo(placa)) {
             lblMensaje.setText("⚠️ No se encontró un ingreso activo para esa placa.");
@@ -104,7 +119,7 @@ public class IngresoSalidaViewController {
         lblRecargo.setText(String.format("$ %.2f", Double.valueOf(t.getRecargo())));
         lblCostoTotal.setText(String.format("$ %.2f", Double.valueOf(t.getCostoTotal())));
     }
-    
+
     private void limpiarTicketScreen() {
         lblIdTicket.setText(null);
         lblHoraIngreso.setText(null);
@@ -115,7 +130,6 @@ public class IngresoSalidaViewController {
         lblRecargo.setText(null);
         lblCostoTotal.setText(null);
     }
-    
 
     private String format(LocalDateTime dt) {
         return dt != null ? dt.format(formatter) : "-";

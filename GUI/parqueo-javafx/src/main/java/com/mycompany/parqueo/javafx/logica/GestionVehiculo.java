@@ -6,6 +6,7 @@ package com.mycompany.parqueo.javafx.logica;
 
 import com.mycompany.parqueo.javafx.datos.*;
 import com.mycompany.parqueo.javafx.dominio.*;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import com.mycompany.parqueo.javafx.excepciones.VehiculoException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,9 @@ public class GestionVehiculo {
     private IBDVehiculo bd;
 
     public GestionVehiculo() {
-        this.bd = new MapVehiculo();
+        //this.bd = new MapVehiculo();
         //this.bd = new ListVehiculo();
+        this.bd = new ArchivoVehiculo();
     }
     
     public Moto crearMoto(String placa, String marca, String cilindraje){
@@ -76,7 +78,7 @@ public class GestionVehiculo {
     }
     
     
-    public void adicionarVehiculo(Vehiculo v) throws VehiculoException{
+    public void adicionarVehiculo(Vehiculo v) throws VehiculoException, ArchivoException{
         
         if(this.bd.exist(v.getPlaca()))
             throw new VehiculoException("La placa del vehiculo ya se encuentra registrada");
@@ -84,14 +86,14 @@ public class GestionVehiculo {
         this.bd.adicionarVehiculo(v);
     }
     
-    public List<Vehiculo> listarTodos(){
+    public List<Vehiculo> listarTodos() throws ArchivoException{
         return this.bd.listarTodos();
     }
-    public Vehiculo buscar(String placa){
+    public Vehiculo buscar(String placa) throws ArchivoException{
         return this.bd.buscar(placa);
     }
     
-    public void eliminar(String placa){
+    public void eliminar(String placa) throws ArchivoException{
         this.bd.eliminar(placa);
     }
     

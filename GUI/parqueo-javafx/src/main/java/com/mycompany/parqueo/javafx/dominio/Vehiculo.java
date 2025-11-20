@@ -35,6 +35,7 @@ public abstract class Vehiculo implements IFacturable {
         return "Vehiculo{" + "placa=" + placa + '}';
     }
     
+    public abstract String getInfo();
     
     
 }
