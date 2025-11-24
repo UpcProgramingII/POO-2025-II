@@ -19,10 +19,11 @@ public class GestionVehiculo {
     
     private IBDVehiculo bd;
 
-    public GestionVehiculo() {
+    public GestionVehiculo() throws ArchivoException {
         //this.bd = new MapVehiculo();
         //this.bd = new ListVehiculo();
         this.bd = new ArchivoVehiculo();
+        
     }
     
     public Moto crearMoto(String placa, String marca, String cilindraje){

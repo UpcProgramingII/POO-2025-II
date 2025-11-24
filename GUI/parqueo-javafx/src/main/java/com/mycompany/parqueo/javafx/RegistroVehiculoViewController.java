@@ -14,44 +14,65 @@ import javafx.scene.layout.VBox;
 
 public class RegistroVehiculoViewController {
 
-    private GestionVehiculo logicaVehiculo = new GestionVehiculo();
-    
+    private GestionVehiculo logicaVehiculo;
+
     @FXML
     private ComboBox<String> cmbTipoVehiculo;
     @FXML
     private TextField txtPlaca;
 
     // Auto
-    @FXML private VBox paneAuto;
-    @FXML private TextField txtMarcaAuto;
-    @FXML private TextField txtModeloAuto;
-    @FXML private TextField txtPuertasAuto;
+    @FXML
+    private VBox paneAuto;
+    @FXML
+    private TextField txtMarcaAuto;
+    @FXML
+    private TextField txtModeloAuto;
+    @FXML
+    private TextField txtPuertasAuto;
 
     // Moto
-    @FXML private VBox paneMoto;
-    @FXML private TextField txtMarcaMoto;
-    @FXML private TextField txtCilindrajeMoto;
+    @FXML
+    private VBox paneMoto;
+    @FXML
+    private TextField txtMarcaMoto;
+    @FXML
+    private TextField txtCilindrajeMoto;
 
     // Bicicleta
-    @FXML private VBox paneBicicleta;
-    @FXML private TextField txtTipoBicicleta;
-    @FXML private CheckBox chkCambiosBicicleta;
+    @FXML
+    private VBox paneBicicleta;
+    @FXML
+    private TextField txtTipoBicicleta;
+    @FXML
+    private CheckBox chkCambiosBicicleta;
 
     @FXML
     private Button btnRegistrar;
     @FXML
     private Label lblMensaje;
+    
+    private boolean habilitarAccion=false;
 
     @FXML
     public void initialize() {
+        try {
+            this.logicaVehiculo = new GestionVehiculo();
+            this.habilitarAccion=true;
+        } catch (ArchivoException e) {
+            this.lblMensaje.setText(e.getMessage());
+            this.habilitarAccion=false;
+        }
+        
+      
+        this.btnRegistrar.setDisable(!this.habilitarAccion);
         cmbTipoVehiculo.getItems().addAll("Auto", "Moto", "Bicicleta");
 //
         cmbTipoVehiculo.valueProperty().addListener((obs, oldVal, newVal) -> {
             actualizarSecciones(newVal);
         });
+
     }
-    
-    
 
     private void actualizarSecciones(String tipo) {
         // Ocultar todos
@@ -62,7 +83,9 @@ public class RegistroVehiculoViewController {
         paneBicicleta.setVisible(false);
         paneBicicleta.setManaged(false);
 
-        if (tipo == null) return;
+        if (tipo == null) {
+            return;
+        }
 
         switch (tipo) {
             case "Auto":
@@ -84,37 +107,37 @@ public class RegistroVehiculoViewController {
     private void handleRegistrarVehiculo() {
         String tipo = cmbTipoVehiculo.getValue();
         String placa = txtPlaca.getText();
-        Vehiculo vehiculo=null;
+        Vehiculo vehiculo = null;
         if (tipo == null || placa.isEmpty()) {
             lblMensaje.setText("⚠️ Debe seleccionar un tipo de vehículo y una placa válida.");
             return;
         }
-        try{
+        try {
             switch (tipo) {
                 case "Auto":
-                            vehiculo = this.logicaVehiculo.crearAuto(placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText());
-                            lblMensaje.setText(String.format("Auto registrado: %s, Marca %s, Modelo %s, Puertas %s",
-                                    placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText()));
-                            break;
+                    vehiculo = this.logicaVehiculo.crearAuto(placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText());
+                    lblMensaje.setText(String.format("Auto registrado: %s, Marca %s, Modelo %s, Puertas %s",
+                            placa, txtMarcaAuto.getText(), txtModeloAuto.getText(), txtPuertasAuto.getText()));
+                    break;
                 case "Moto":
 
-                           vehiculo = this.logicaVehiculo.crearMoto(placa, txtMarcaMoto.getText(), txtCilindrajeMoto.getText());
-                           lblMensaje.setText(String.format("Moto registrada: %s, Marca %s, Cilindraje %s",
-                                                    placa, 
-                                                    txtMarcaMoto.getText(), 
-                                                    txtCilindrajeMoto.getText()));
-                            break;
+                    vehiculo = this.logicaVehiculo.crearMoto(placa, txtMarcaMoto.getText(), txtCilindrajeMoto.getText());
+                    lblMensaje.setText(String.format("Moto registrada: %s, Marca %s, Cilindraje %s",
+                            placa,
+                            txtMarcaMoto.getText(),
+                            txtCilindrajeMoto.getText()));
+                    break;
 
                 case "Bicicleta":
-                            vehiculo = this.logicaVehiculo.crearBicicleta(placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected());
-                            lblMensaje.setText(String.format("Bicicleta registrada: %s, Tipo %s, Cambios: %s",
-                                    placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected() ? "Sí" : "No"));
-                            break;
+                    vehiculo = this.logicaVehiculo.crearBicicleta(placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected());
+                    lblMensaje.setText(String.format("Bicicleta registrada: %s, Tipo %s, Cambios: %s",
+                            placa, txtTipoBicicleta.getText(), chkCambiosBicicleta.isSelected() ? "Sí" : "No"));
+                    break;
 
             }
             this.logicaVehiculo.adicionarVehiculo(vehiculo);
             limpiarCampos();
-        }catch(IllegalArgumentException | VehiculoException | ArchivoException e){
+        } catch (IllegalArgumentException | VehiculoException | ArchivoException e) {
 
             lblMensaje.setText(e.getMessage());
 

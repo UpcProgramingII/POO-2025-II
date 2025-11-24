@@ -29,13 +29,14 @@ public class ArchivoVehiculo implements IBDVehiculo {
     private FileWriter aEscritura; // 
     private Scanner aLectura;
 
-    public ArchivoVehiculo() {
+    public ArchivoVehiculo() throws ArchivoException {
         this.archivo = new File("Vehiculos.dat");
         try {
             if (!this.archivo.exists()) {
                 this.archivo.createNewFile();
             }
         } catch (IOException e) {
+            throw new ArchivoException("Error al crear archivo de vehiculos");
         }
     }
 

@@ -47,10 +47,34 @@ public class IngresoSalidaViewController {
     private Label lblCostoTotal;
 
     private ParkingManager logicaParking = new ParkingManager();
-    private GestionVehiculo logicaVehiculo = new GestionVehiculo();
+    private GestionVehiculo logicaVehiculo;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
+    private boolean habilitarAccion = false;
+    
+    @FXML
+    public void initialize() {
+        try{
+            this.logicaVehiculo = new GestionVehiculo();
+            this.habilitarAccion=true;
+            
+        }catch(ArchivoException e){
+            this.lblMensaje.setText("Erro no se puede abrir el archivo de vehiculos");
+            this.habilitarAccion=false;
+            
+            Alert alerta = new Alert(Alert.AlertType.ERROR);
+            alerta.setTitle("Error de BD");
+            alerta.setContentText("No fue posible crear o cargar la BD de vehiculo");
+            alerta.setHeaderText("Descripcion del error");
+            alerta.show();
+            
+        }    
+        
+        
+        this.btnIngresar.setDisable(!this.habilitarAccion);
+        this.btnSalir.setDisable(!this.habilitarAccion);
+    }
+    
     @FXML
     public void handleIngreso() {
         String placa = txtPlaca.getText().trim();
