@@ -28,7 +28,19 @@ public class ListRegistroParking implements IBDRegistroParking {
     }
 
     @Override
-    public RegistroParking registrarSalida(String placa) throws ArchivoException {
+    public void updateRegistro(RegistroParking registro) throws ArchivoException{
+        RegistroParking r=this.buscarRegistro(registro.getVehiuclo().getPlaca());
+        r.setActivo(registro.isActivo());
+        r.setCostoTotal(registro.getCostoTotal());
+        r.setDuracion(registro.getDuracion());
+        r.setId(registro.getId());
+        r.setVehiuclo(registro.getVehiuclo());
+        r.sethFinal(registro.gethFinal());
+        r.sethInicio(registro.gethInicio());
+    }
+    
+    @Override
+    public RegistroParking buscarRegistro(String placa) throws ArchivoException {
         
         for(RegistroParking r: this.db){
             if(r.isActivo() && r.getVehiuclo().getPlaca().equals(placa)){

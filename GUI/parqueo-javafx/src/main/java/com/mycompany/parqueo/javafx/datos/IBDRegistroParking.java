@@ -17,7 +17,9 @@ public interface IBDRegistroParking extends Serializable {
     
     public void registrarIngreso(RegistroParking registro) throws ArchivoException;
     
-    public RegistroParking registrarSalida(String placa)throws ArchivoException;
+    
+    public void updateRegistro(RegistroParking registro)throws ArchivoException;
+    public RegistroParking buscarRegistro(String placa)throws ArchivoException;
     
     public int size() throws ArchivoException;
     

@@ -32,8 +32,13 @@ public class MapRegistroParking implements IBDRegistroParking {
     }
 
     @Override
-    public RegistroParking registrarSalida(String placa) throws ArchivoException{
+    public RegistroParking buscarRegistro(String placa) throws ArchivoException{
         return this.bd.get(placa);
+    }
+    
+    @Override
+    public void updateRegistro(RegistroParking registro){
+        this.bd.put(registro.getVehiuclo().getPlaca(), registro);
     }
 
     @Override

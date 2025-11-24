@@ -46,6 +46,8 @@ public class ArchivoParking implements IBDRegistroParking {
         }
 
     }
+    
+    
 
     private void guardar(IBDRegistroParking bd) throws ArchivoException {
         ObjectOutputStream oos = null;
@@ -68,11 +70,18 @@ public class ArchivoParking implements IBDRegistroParking {
         this.guardar(bd);
         
     }
+    
+    @Override
+    public void updateRegistro(RegistroParking registro) throws ArchivoException{
+        IBDRegistroParking bd = this.leer();
+        bd.updateRegistro(registro);
+        this.guardar(bd);
+    }
 
     @Override
-    public RegistroParking registrarSalida(String placa) throws ArchivoException {
+    public RegistroParking buscarRegistro(String placa) throws ArchivoException {
         IBDRegistroParking bd = this.leer();
-        return bd.registrarSalida(placa);
+        return bd.buscarRegistro(placa);
     }
 
     @Override

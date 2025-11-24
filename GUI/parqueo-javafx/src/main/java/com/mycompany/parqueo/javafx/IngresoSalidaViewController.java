@@ -4,6 +4,7 @@
  */
 package com.mycompany.parqueo.javafx;
 
+import com.mycompany.parqueo.javafx.dominio.RegistroParking;
 import com.mycompany.parqueo.javafx.dominio.Ticket;
 import com.mycompany.parqueo.javafx.dominio.Vehiculo;
 import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
@@ -128,8 +129,8 @@ public class IngresoSalidaViewController {
                 limpiarTicketScreen();
                 return;
             }
-            
-            Ticket ticket = this.logicaParking.registrarSalida(placa);
+            RegistroParking registroActivo = this.logicaParking.buscarRegistroActivo(placa);
+            Ticket ticket = this.logicaParking.registrarSalida(registroActivo);
             mostrarTicket(ticket);
             lblMensaje.setText("✅ Salida registrada correctamente.");
         } catch (ArchivoException e) {

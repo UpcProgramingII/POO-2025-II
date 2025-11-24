@@ -12,6 +12,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -37,14 +40,20 @@ public class ParkingManager {
         return this.generarTicket(registro);
     }
     
-    public Ticket registrarSalida(String placa) throws ArchivoException{
+    public RegistroParking buscarRegistroActivo(String placa) throws ArchivoException{
         
-        RegistroParking registro = this.bdParking.registrarSalida(placa);
+        RegistroParking registro = this.bdParking.buscarRegistro(placa);
+        return registro;
+        
+    }
+    
+    public Ticket registrarSalida(RegistroParking registro) throws ArchivoException{
+        
         registro.sethFinal(LocalDateTime.now());// se suma manualmente 4 horas
         this.duracionHoras(registro);
         this.facturarCostoParqueo(registro);
         registro.setActivo(false);
-        //this.bdParking.registrarIngreso(registro);
+        this.bdParking.updateRegistro(registro);
         return this.generarTicket(registro);
         
     }
@@ -117,6 +126,55 @@ public class ParkingManager {
     }
     
  
+    public List<RegistroParking> getAll() throws ArchivoException{
+    
+            List<RegistroParking> datos = this.bdParking.listAll();
+            return datos;
+        
+    }
+    
+    public Map<String, Integer> dataGraficaBarra() throws ArchivoException{
+        
+        Map<String, Integer> datos = new HashMap();
+        int countMoto=0;
+        int countAuto=0;
+        int countBici=0;
+        
+        
+        for(RegistroParking r: this.getAll()){
+            if(r.getVehiuclo().getType().equals("Auto")){
+                countAuto++;
+            }else if(r.getVehiuclo().getType().equals("Moto")){
+                countMoto++;
+            }else{
+                countBici++;
+            }
+        }
+        datos.put("Auto", countAuto);
+        datos.put("Moto", countMoto);
+        datos.put("Bicicleta", countBici);
+        return datos;
+    }
+    
+    public Map<String, Integer> dataGraficaTorta() throws ArchivoException{
+        
+        Map<String, Integer> datos = new HashMap();
+        int countActivo=0;
+        int countNoActivo=0;
+        
+        
+        for(RegistroParking r: this.getAll()){
+            if(r.isActivo()){
+                countActivo++;
+            }else{
+                countNoActivo++;
+            }
+        }
+        datos.put("Activo", countActivo);
+        datos.put("No Activo", countNoActivo);
+        
+        return datos;
+    }
     
     
 }
