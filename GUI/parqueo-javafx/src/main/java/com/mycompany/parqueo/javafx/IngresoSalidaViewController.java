@@ -13,12 +13,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+
 
 public class IngresoSalidaViewController {
-
+    
     @FXML
     private TextField txtPlaca;
     @FXML
@@ -45,22 +43,23 @@ public class IngresoSalidaViewController {
     private Label lblRecargo;
     @FXML
     private Label lblCostoTotal;
-
-    private ParkingManager logicaParking = new ParkingManager();
+    
+    private ParkingManager logicaParking;
     private GestionVehiculo logicaVehiculo;
-
+    
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private boolean habilitarAccion = false;
     
     @FXML
     public void initialize() {
-        try{
+        try {
             this.logicaVehiculo = new GestionVehiculo();
-            this.habilitarAccion=true;
+            this.logicaParking = new ParkingManager();
+            this.habilitarAccion = true;
             
-        }catch(ArchivoException e){
+        } catch (ArchivoException e) {
             this.lblMensaje.setText("Erro no se puede abrir el archivo de vehiculos");
-            this.habilitarAccion=false;
+            this.habilitarAccion = false;
             
             Alert alerta = new Alert(Alert.AlertType.ERROR);
             alerta.setTitle("Error de BD");
@@ -68,8 +67,7 @@ public class IngresoSalidaViewController {
             alerta.setHeaderText("Descripcion del error");
             alerta.show();
             
-        }    
-        
+        }        
         
         this.btnIngresar.setDisable(!this.habilitarAccion);
         this.btnSalir.setDisable(!this.habilitarAccion);
@@ -84,7 +82,7 @@ public class IngresoSalidaViewController {
             limpiarTicketScreen();
             return;
         } else {
-
+            
             try {
                 vehiculo = this.logicaVehiculo.buscar(placa);
                 if (vehiculo == null) {
@@ -97,20 +95,24 @@ public class IngresoSalidaViewController {
                 limpiarTicketScreen();
             }
         }
+        
+        try {
+            if (this.logicaParking.contieneVehiculo(placa)) {
+                lblMensaje.setText("⚠️ Este vehículo ya tiene un ingreso activo.");
+                limpiarTicketScreen();
+                return;
+            }
 
-        if (this.logicaParking.contieneVehiculo(placa)) {
-            lblMensaje.setText("⚠️ Este vehículo ya tiene un ingreso activo.");
-            limpiarTicketScreen();
-            return;
+            // Crear nuevo ticket
+            Ticket ticket = this.logicaParking.crearIngreso(vehiculo);
+            
+            mostrarTicket(ticket);
+            lblMensaje.setText("✅ Ingreso registrado correctamente.");
+        } catch (ArchivoException e) {
+            this.lblMensaje.setText(e.getMessage());
         }
-
-        // Crear nuevo ticket
-        Ticket ticket = this.logicaParking.crearIngreso(vehiculo);
-
-        mostrarTicket(ticket);
-        lblMensaje.setText("✅ Ingreso registrado correctamente.");
     }
-
+    
     @FXML
     public void handleSalida() {
         String placa = txtPlaca.getText().trim();
@@ -119,18 +121,22 @@ public class IngresoSalidaViewController {
             limpiarTicketScreen();
             return;
         }
-
-        if (!this.logicaParking.contieneVehiculo(placa)) {
-            lblMensaje.setText("⚠️ No se encontró un ingreso activo para esa placa.");
-            limpiarTicketScreen();
-            return;
+        
+        try {
+            if (!this.logicaParking.contieneVehiculo(placa)) {
+                lblMensaje.setText("⚠️ No se encontró un ingreso activo para esa placa.");
+                limpiarTicketScreen();
+                return;
+            }
+            
+            Ticket ticket = this.logicaParking.registrarSalida(placa);
+            mostrarTicket(ticket);
+            lblMensaje.setText("✅ Salida registrada correctamente.");
+        } catch (ArchivoException e) {
+            this.lblMensaje.setText(e.getMessage());
         }
-
-        Ticket ticket = this.logicaParking.registrarSalida(placa);
-        mostrarTicket(ticket);
-        lblMensaje.setText("✅ Salida registrada correctamente.");
     }
-
+    
     private void mostrarTicket(Ticket t) {
         lblIdTicket.setText(String.valueOf(t.getIdTicket()));
         //lblHoraIngreso.setText(format(t.getHoraIngreso));
@@ -143,7 +149,7 @@ public class IngresoSalidaViewController {
         lblRecargo.setText(String.format("$ %.2f", Double.valueOf(t.getRecargo())));
         lblCostoTotal.setText(String.format("$ %.2f", Double.valueOf(t.getCostoTotal())));
     }
-
+    
     private void limpiarTicketScreen() {
         lblIdTicket.setText(null);
         lblHoraIngreso.setText(null);
@@ -154,7 +160,7 @@ public class IngresoSalidaViewController {
         lblRecargo.setText(null);
         lblCostoTotal.setText(null);
     }
-
+    
     private String format(LocalDateTime dt) {
         return dt != null ? dt.format(formatter) : "-";
     }

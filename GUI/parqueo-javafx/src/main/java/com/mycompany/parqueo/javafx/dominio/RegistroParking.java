@@ -4,13 +4,14 @@
  */
 package com.mycompany.parqueo.javafx.dominio;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  *
  * @author Jairo F
  */
-public class RegistroParking {
+public class RegistroParking implements Serializable {
     
     private int id;
     private LocalDateTime hInicio;

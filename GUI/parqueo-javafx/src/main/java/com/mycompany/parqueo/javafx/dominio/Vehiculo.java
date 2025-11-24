@@ -4,11 +4,13 @@
  */
 package com.mycompany.parqueo.javafx.dominio;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Jairo F
  */
-public abstract class Vehiculo implements IFacturable {
+public abstract class Vehiculo implements IFacturable, Serializable {
     
     private String placa;
 

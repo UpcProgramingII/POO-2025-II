@@ -5,6 +5,7 @@
 package com.mycompany.parqueo.javafx.datos;
 
 import com.mycompany.parqueo.javafx.dominio.RegistroParking;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,12 +23,12 @@ public class ListRegistroParking implements IBDRegistroParking {
     }
     
     @Override
-    public void registrarIngreso(RegistroParking registro) {
+    public void registrarIngreso(RegistroParking registro) throws ArchivoException {
            this.db.add(registro);
     }
 
     @Override
-    public RegistroParking registrarSalida(String placa) {
+    public RegistroParking registrarSalida(String placa) throws ArchivoException {
         
         for(RegistroParking r: this.db){
             if(r.isActivo() && r.getVehiuclo().getPlaca().equals(placa)){
@@ -38,17 +39,17 @@ public class ListRegistroParking implements IBDRegistroParking {
     }
 
     @Override
-    public int size() {
+    public int size() throws ArchivoException{
         return this.db.size();
     }
 
     @Override
-    public List<RegistroParking> listAll() {
+    public List<RegistroParking> listAll() throws ArchivoException{
         return new ArrayList(this.db);
     }
 
     @Override
-    public boolean contieneVehiculo(String placa) {
+    public boolean contieneVehiculo(String placa) throws ArchivoException{
         for(RegistroParking r: this.db){
             if(r.isActivo() && r.getVehiuclo().getPlaca().equals(placa)){
                 return true;

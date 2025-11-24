@@ -7,6 +7,7 @@ package com.mycompany.parqueo.javafx.logica;
 
 import com.mycompany.parqueo.javafx.datos.*;
 import com.mycompany.parqueo.javafx.dominio.*;
+import com.mycompany.parqueo.javafx.excepciones.ArchivoException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,12 +22,14 @@ public class ParkingManager {
     private static int ticket=0;
     private IBDRegistroParking bdParking;
 
-    public ParkingManager() {
-        this.bdParking =new ListRegistroParking();
+    public ParkingManager() throws ArchivoException {
+        
+        //this.bdParking =new ListRegistroParking();
+        this.bdParking = new ArchivoParking();
     }
     
     
-    public Ticket crearIngreso(IFacturable vehiculo){
+    public Ticket crearIngreso(IFacturable vehiculo) throws ArchivoException{
         
         RegistroParking registro = new RegistroParking(vehiculo);
         registro.setId(this.bdParking.size()+1); 
@@ -34,7 +37,7 @@ public class ParkingManager {
         return this.generarTicket(registro);
     }
     
-    public Ticket registrarSalida(String placa){
+    public Ticket registrarSalida(String placa) throws ArchivoException{
         
         RegistroParking registro = this.bdParking.registrarSalida(placa);
         registro.sethFinal(LocalDateTime.now());// se suma manualmente 4 horas
@@ -46,11 +49,11 @@ public class ParkingManager {
         
     }
     
-    public boolean contieneVehiculo(String placa){
+    public boolean contieneVehiculo(String placa) throws ArchivoException{
         return this.bdParking.contieneVehiculo(placa);
     }
     
-    public void printRegistro(){
+    public void printRegistro() throws ArchivoException{
         DateTimeFormatter format = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);
         for(RegistroParking r:this.bdParking.listAll()){
             System.out.printf("%S %10s %10s %10s %10s %10s %10s%n",
@@ -66,7 +69,7 @@ public class ParkingManager {
     }
     
     
-    public Ticket generarTicket(RegistroParking registro){
+    public Ticket generarTicket(RegistroParking registro) {
         Ticket t= this.generarTicket(registro.gethInicio(), registro.gethFinal(), registro.getVehiuclo());
         t.setIdTicket(String.valueOf(registro.getId()));
         return t;
